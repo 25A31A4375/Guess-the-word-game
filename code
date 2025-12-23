@@ -1,0 +1,46 @@
+import random
+
+# List of words to choose from
+words = ["apple", "banana", "orange", "grape", "kiwi", "mango", "peach", "pear", "plum", "cherry"]
+
+# Function to start the game
+def guess_the_word():
+    # Pick a random word from the list
+    word = random.choice(words)
+    guessed_word = ['_'] * len(word)  # List of underscores representing unguessed letters
+    attempts = 6  # Number of attempts before losing
+
+    print("Welcome to Guess the Word!")
+    print("Try to guess the word. You have 6 attempts.")
+    print("The word is:", " ".join(guessed_word))
+    
+    while attempts > 0:
+        guess = input("Enter a letter: ").lower()
+        
+        # Check if the guess is valid (a single letter)
+        if len(guess) != 1 or not guess.isalpha():
+            print("Please enter only a single letter.")
+            continue
+        
+        # Check if the letter is in the word
+        if guess in word:
+            print(f"Good guess! The letter {guess} is in the word.")
+            for i in range(len(word)):
+                if word[i] == guess:
+                    guessed_word[i] = guess
+            print("The word is:", " ".join(guessed_word))
+            
+            # Check if the player has guessed the whole word
+            if "_" not in guessed_word:
+                print("Congratulations! You guessed the word!")
+                break
+        else:
+            attempts -= 1
+            print(f"Oops! The letter {guess} is not in the word. You have {attempts} attempts left.")
+            print("The word is:", " ".join(guessed_word))
+    
+    if attempts == 0:
+        print(f"Game over! The word was: {word}")
+
+# Start the game
+guess_the_word()
