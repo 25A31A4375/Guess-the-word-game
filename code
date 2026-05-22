@@ -1,0 +1,85 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+#include <ctype.h>
+
+char *words[] = {
+    "apple", "banana", "orange", "grape", "kiwi",
+    "mango", "peach", "pear", "plum", "cherry"
+};
+
+void guessTheWord() {
+    int totalWords = sizeof(words) / sizeof(words[0]);
+
+    
+    srand(time(0));
+    char *word = words[rand() % totalWords];
+
+    int length = strlen(word);
+    char guessedWord[length + 1];
+
+    for (int i = 0; i < length; i++) {
+        guessedWord[i] = '_';
+    }
+    guessedWord[length] = '\0';
+
+    int attempts = 6;
+    char guess;
+
+    printf("Welcome to Guess the Word!\n");
+    printf("Try to guess the word. You have 6 attempts.\n");
+
+    printf("The word is: ");
+    for (int i = 0; i < length; i++) {
+        printf("%c ", guessedWord[i]);
+    }
+    printf("\n");
+
+    while (attempts > 0) {
+
+        printf("Enter a letter: ");
+        scanf(" %c", &guess);
+
+        guess = tolower(guess);
+
+        if (!isalpha(guess)) {
+            printf("Please enter only a single letter.\n");
+            continue;
+        }
+
+        int found = 0;
+        for (int i = 0; i < length; i++) {
+            if (word[i] == guess) {
+                guessedWord[i] = guess;
+                found = 1;
+            }
+        }
+
+        if (found) {
+            printf("Good guess! The letter '%c' is in the word.\n", guess);
+        } else {
+            attempts--;
+            printf("Oops! The letter '%c' is not in the word.\n", guess);
+            printf("You have %d attempts left.\n", attempts);
+        }
+        printf("The word is: ");
+        for (int i = 0; i < length; i++) {
+            printf("%c ", guessedWord[i]);
+        }
+        printf("\n");
+        if (strcmp(word, guessedWord) == 0) {
+            printf("Congratulations! You guessed the word!\n");
+            return;
+        }
+    }
+
+    
+    printf("Game over! The word was: %s\n", word);
+}
+
+
+int main() {
+    guessTheWord();
+    return 0;
+}
